@@ -154,15 +154,15 @@ class QtFitDlg(QDialog):
 
     @pyqtSlot()
     def on_selectInputFile_clicked(self):
-        filename = QFileDialog.getOpenFileName(self, "Open CSV file",
-                                                     filter="CSV file (*.csv);;All Files (*.*)")
+        filename, _ = QFileDialog.getOpenFileName(self, "Open CSV file",
+                                                  filter="CSV file (*.csv);;All Files (*.*)")
         if filename:
             self.input = filename
 
     @pyqtSlot()
     def on_selectOutputFile_clicked(self):
-        filename = QtGui.QFileDialog.getSaveFileName(self, "Save CSV file",
-                                                     filter="CSV file (*.csv);;All Files (*.*)")
+        filename, _ = QFileDialog.getSaveFileName(self, "Save CSV file",
+                                                  filter="CSV file (*.csv);;All Files (*.*)")
         if filename:
             self.output = filename
 
