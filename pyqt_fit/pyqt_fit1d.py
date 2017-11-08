@@ -4,10 +4,12 @@ from . import functions, residuals, plot_fit, bootstrap
 from .compat import user_text, CSV_READ_FLAGS
 from .compat import unicode_csv_reader as csv_reader
 
-from PyQt5 import QtGui, QtCore, uic
-from PyQt5.QtCore import pyqtSlot, QObject, Qt
-from PyQt5.QtWidgets import QMessageBox, QDialog, QApplication, QDialogButtonBox, QFileDialog
+from PyQt5 import QtCore, uic
+from PyQt5.QtCore import pyqtSlot, Qt
+from PyQt5.QtGui import QDoubleValidator
+from PyQt5.QtWidgets import QMessageBox, QDialog, QApplication, QDialogButtonBox, QFileDialog, QAbstractButton
 import matplotlib
+matplotlib.use('Qt5Agg')
 from numpy import nan, array, ma, arange
 from path import path
 from .curve_fitting import CurveFitting
@@ -109,7 +111,7 @@ class QtFitDlg(QDialog):
         if sys.platform != "darwin":
             self.selectInputFile.setMaximumWidth(32)
             self.selectOutputFile.setMaximumWidth(32)
-        self.validator = QtGui.QDoubleValidator()
+        self.validator = QDoubleValidator()
         self.xMin.setValidator(self.validator)
         self.xMax.setValidator(self.validator)
         self.buttonBox.addButton("Plot", QDialogButtonBox.ApplyRole)
@@ -399,12 +401,12 @@ class QtFitDlg(QDialog):
             self._CI = (self._CI[0], ints)
             self.CIvalues.setText(";".join("{:g}".format(f) for f in ints))
 
-    @pyqtSlot(QObject)
+    @pyqtSlot(QAbstractButton)
     def on_buttonBox_clicked(self, button):
         role = self.buttonBox.buttonRole(button)
-        if role == QtGui.QDialogButtonBox.ResetRole:
+        if role == QDialogButtonBox.ResetRole:
             close_figure('all')
-        elif role == QtGui.QDialogButtonBox.ApplyRole:
+        elif role == QDialogButtonBox.ApplyRole:
             self.plot()
 
     @pyqtSlot()
@@ -492,6 +494,7 @@ def main():
     wnd.show()
     wnd.raise_()
     return wnd
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
